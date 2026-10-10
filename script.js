@@ -2,16 +2,15 @@ const cells = document.querySelectorAll('.cell');
 const statusText = document.getElementById('status');
 const restartBtn = document.getElementById('restartBtn');
 
-// All 8 possible winning combinations
 const winningConditions = [
-  [0, 1, 2], // Top row
-  [3, 4, 5], // Middle row
-  [6, 7, 8], // Bottom row
-  [0, 3, 6], // Left column
-  [1, 4, 7], // Middle column
-  [2, 5, 8], // Right column
-  [0, 4, 8], // Diagonal top-left to bottom-right
-  [2, 4, 6]  // Diagonal top-right to bottom-left
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6]
 ];
 
 let options = ["", "", "", "", "", "", "", "", ""];
@@ -30,7 +29,6 @@ function initializeGame() {
 function cellClicked() {
   const cellIndex = this.getAttribute('data-index');
 
-  // Ignore click if cell is already filled or game is over
   if (options[cellIndex] !== "" || !running) {
     return;
   }
@@ -69,10 +67,12 @@ function checkWinner() {
   }
 
   if (roundWon) {
-    statusText.textContent = `Player ${currentPlayer} Wins! 🎉`;
+    statusText.textContent = `Player ${currentPlayer} Wins! `;
+    statusText.classList.add('winner');
     running = false;
   } else if (!options.includes("")) {
-    statusText.textContent = `It's a Draw! 🤝`;
+    statusText.textContent = `It's a Draw! `;
+    statusText.classList.remove('winner');
     running = false;
   } else {
     changePlayer();
@@ -83,6 +83,7 @@ function restartGame() {
   currentPlayer = "X";
   options = ["", "", "", "", "", "", "", "", ""];
   statusText.textContent = `Player ${currentPlayer}'s turn`;
+  statusText.classList.remove('winner');
   cells.forEach(cell => {
     cell.textContent = "";
     cell.classList.remove('x', 'o');
